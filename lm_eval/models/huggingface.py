@@ -96,6 +96,7 @@ class HuggingFaceAutoLM(BaseLM):
         bnb_4bit_quant_type: Optional[str] = None,
         bnb_4bit_compute_dtype: Optional[Union[str, torch.dtype]] = None,
         bnb_4bit_use_double_quant: Optional[bool] = False,
+        use_flash_attention_2: Optional[bool] = False,
     ):
         """Initializes a HuggingFace `AutoModel` and `AutoTokenizer` for evaluation.
         Args:
@@ -170,7 +171,9 @@ class HuggingFaceAutoLM(BaseLM):
             bnb_4bit_use_double_quant (bool, optional, defaults to False):
                 Whether or not to use double quant to quantize the absmax.
                 https://github.com/huggingface/transformers/blob/main/src/transformers/utils/quantization_config.py#L80
-
+            use_flash_attention_2 (bool, optional, defaults to False):
+                Whether or not to use Flash Attention 2.0 for the model.
+                https://huggingface.co/docs/transformers/perf_infer_gpu_one#flashattention-2
         """
         super().__init__()
 
@@ -240,6 +243,7 @@ class HuggingFaceAutoLM(BaseLM):
             bnb_4bit_compute_dtype=bnb_4bit_compute_dtype,
             bnb_4bit_use_double_quant=bnb_4bit_use_double_quant,
             low_cpu_mem_usage=low_cpu_mem_usage,
+            use_flash_attention_2=use_flash_attention_2,
             **model_kwargs,
         )
         # note: peft_path can be different than pretrained model path
@@ -288,6 +292,7 @@ class HuggingFaceAutoLM(BaseLM):
         bnb_4bit_quant_type: Optional[str] = None,
         bnb_4bit_compute_dtype: Optional[Union[str, torch.dtype]] = None,
         bnb_4bit_use_double_quant: Optional[bool] = False,
+        use_flash_attention_2: Optional[bool] = False,
     ) -> transformers.AutoModel:
         """Returns a pre-trained pytorch model from a pre-trained model configuration."""
         if not quantized:
@@ -309,6 +314,11 @@ class HuggingFaceAutoLM(BaseLM):
                         model_kwargs[
                             "bnb_4bit_use_double_quant"
                         ] = bnb_4bit_use_double_quant
+            if use_flash_attention_2:
+                # TODO add checking for flash_attn is installed and the pretrain model supports it
+                # Only LLaMA, Falcon, Vicuna and Mistral support flash_attn
+                model_kwargs["use_flash_attention_2"] = use_flash_attention_2
+                torch_dtype = torch.bfloat16
             model = self.AUTO_MODEL_CLASS.from_pretrained(
                 pretrained,
                 revision=revision + ("/" + subfolder if subfolder is not None else ""),
