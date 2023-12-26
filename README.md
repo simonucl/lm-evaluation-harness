@@ -21,7 +21,7 @@ This project provides a unified framework to test generative language models on 
 
 Features:
 
-- 200+ tasks implemented. See the [task-table](./docs/task_table.md) for a complete list.
+- 200+ subtasks / evaluation settings implemented. See the [task-table](./docs/task_table.md) for a complete list.
 - Support for models loaded via [transformers](https://github.com/huggingface/transformers/) (including quantization via [AutoGPTQ](https://github.com/PanQiWei/AutoGPTQ)), [GPT-NeoX](https://github.com/EleutherAI/gpt-neox), and [Megatron-DeepSpeed](https://github.com/microsoft/Megatron-DeepSpeed/), with a flexible tokenization-agnostic interface.
 - Support for commercial APIs including [OpenAI](https://openai.com), [goose.ai](https://goose.ai), and [TextSynth](https://textsynth.com/).
 - Support for evaluation on adapters (e.g. LoRa) supported in [HuggingFace's PEFT library](https://github.com/huggingface/peft).
@@ -52,7 +52,8 @@ pip install -e ".[auto-gptq]"
 
 ## Basic Usage
 
-> **Note**: When reporting results from eval harness, please include the task versions (shown in `results["versions"]`) for reproducibility. This allows bug fixes to tasks while also ensuring that previously reported scores are reproducible. See the [Task Versioning](#task-versioning) section for more info.
+> [!Note]
+> When reporting results from eval harness, please include the task versions (shown in `results["versions"]`) for reproducibility. This allows bug fixes to tasks while also ensuring that previously reported scores are reproducible. See the [Task Versioning](#task-versioning) section for more info.
 
 ### Hugging Face `transformers`
 
@@ -79,7 +80,28 @@ python main.py \
 
 To evaluate models that are loaded via `AutoSeq2SeqLM` in Huggingface, you instead use `hf-seq2seq`. *To evaluate (causal) models across multiple GPUs, use `--model hf-causal-experimental`*
 
-> **Warning**: Choosing the wrong model may result in erroneous outputs despite not erroring.
+> [!Warning]
+> Choosing the wrong model may result in erroneous outputs despite not erroring.
+
+
+### Neural Magic `deepsparse`
+
+Models from [SparseZoo](https://sparsezoo.neuralmagic.com/) can be evaluated directly in lm-evaluation-harness using [DeepSparse](https://github.com/neuralmagic/deepsparse):
+```bash
+pip install deepsparse-nightly[llm]
+python main.py --model deepsparse --model_args pretrained=zoo:mpt-7b-gsm8k_mpt_pretrain-pruned70_quantized --tasks gsm8k
+```
+
+Compatible models hosted on Hugging Face Hub can be used as well:
+```bash
+python main.py --model deepsparse --model_args pretrained=hf:mgoin/TinyLlama-1.1B-Chat-v0.3-ds --tasks hellaswag
+python main.py --model deepsparse --model_args pretrained=hf:neuralmagic/mpt-7b-gsm8k-pruned60-quant-ds --tasks gsm8k
+```
+
+### OpenVINO models converted via HuggingFace Optimum
+```bash
+python main.py --model optimum-causal --model_args pretrained=<model_path_or_name> --task lambada_openai
+```
 
 ### Commercial APIs
 
@@ -93,7 +115,7 @@ python main.py \
     --tasks lambada_openai,hellaswag
 ```
 
-While this functionality is only officially maintained for the official OpenAI API, it tends to also work for other hosting services that use the same API such as [goose.ai](goose.ai) with minor modification. We also have an implementation for the [TextSynth](https://textsynth.com/index.html) API, using `--model textsynth`.
+While this functionality is only officially maintained for the official OpenAI API, it tends to also work for other hosting services that use the same API such as [goose.ai](https://goose.ai) with minor modification. We also have an implementation for the [TextSynth](https://textsynth.com/index.html) API, using `--model textsynth`.
 
 To verify the data integrity of the tasks you're performing in addition to running the tasks themselves, you can use the `--check_integrity` flag:
 
@@ -109,7 +131,8 @@ python main.py \
 
 A number of other libraries contain scripts for calling the eval harness through their library. These include [GPT-NeoX](https://github.com/EleutherAI/gpt-neox/blob/main/eval_tasks/eval_adapter.py), [Megatron-DeepSpeed](https://github.com/microsoft/Megatron-DeepSpeed/blob/main/examples/MoE/readme_evalharness.md), and [mesh-transformer-jax](https://github.com/kingoflolz/mesh-transformer-jax/blob/master/eval_harness.py).
 
-💡 **Tip**: You can inspect what the LM inputs look like by running the following command:
+> [!Tip]
+> You can inspect what the LM inputs look like by running the following command:
 
 ```bash
 python write_out.py \

@@ -21,10 +21,11 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.9",
+    python_requires=">=3.8",
     install_requires=[
         "datasets>=2.0.0",
         "einops",
+        "importlib-resources",
         "jsonlines",
         "numexpr",
         "openai>=0.6.4",
@@ -49,5 +50,7 @@ setuptools.setup(
         "sentencepiece": ["sentencepiece>=0.1.98", "protobuf>=4.22.1"],
         "auto-gptq": ["auto-gptq[triton] @ git+https://github.com/PanQiWei/AutoGPTQ"],
         "anthropic": ["anthropic"],
+        "deepsparse": ["deepsparse-nightly[llm]"],
+        "openvino": ["openvino", "nncf", "onnx", "optimum-intel @ git+https://github.com/huggingface/optimum-intel.git"],
     },
 )
