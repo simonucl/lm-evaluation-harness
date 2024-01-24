@@ -732,14 +732,14 @@ class Task(abc.ABC):
             labeled_examples = (
                 "\n\n".join(
                     [
-                        self.doc_to_text(doc) + self.doc_to_target(doc)
+                        self.doc_to_text(doc) + self.doc_to_target(doc) if not self.is_chat_format else "<|user|>\n" + self.doc_to_text(doc) + "\n<|assistant|>\n" + self.doc_to_target(doc)
                         for doc in fewshotex
                     ]
                 )
                 + "\n\n"
             )
 
-        example = self.doc_to_text(doc)
+        example = self.doc_to_text(doc) if not self.is_chat_format else "<|user|>\n" + self.doc_to_text(doc) + "\n<|assistant|>\n"
         return description + labeled_examples + example
 
 
@@ -748,10 +748,19 @@ class MultipleChoiceTask(Task):
         return " " + doc["choices"][doc["gold"]]
 
     def construct_requests(self, doc, ctx):
+        # if not self.is_chat_format:
+        #     lls = [
+        #         rf.loglikelihood(ctx, " {}".format(choice))[0] for choice in doc["choices"]
+        #     ]
+        # else:
+        #     ctx_chat = "<|user|>\n" + ctx + "<|assistant|>\n"
+        #     lls = [
+        #         rf.loglikelihood(ctx_chat, " {}".format(choice))[0]
+        #         for choice in doc["choices"]
+        #     ]
         lls = [
             rf.loglikelihood(ctx, " {}".format(choice))[0] for choice in doc["choices"]
         ]
-
         return lls
 
     def process_results(self, doc, results):

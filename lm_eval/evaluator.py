@@ -30,6 +30,7 @@ def simple_evaluate(
     decontamination_ngrams_path=None,
     write_out=False,
     output_base_path=None,
+    is_chat_format=False,
 ):
     """Instantiate and evaluate a model on a list of tasks.
 
@@ -103,6 +104,9 @@ def simple_evaluate(
         )
 
     task_dict = lm_eval.tasks.get_task_dict(tasks)
+
+    for name, task in task_dict.items():
+        task.is_chat_format = is_chat_format
 
     if check_integrity:
         run_task_tests(task_list=tasks)
@@ -249,7 +253,7 @@ def evaluate(
             else ""
         )
         if limit is not None:
-            limit = int(len(task_docs) * limit) if limit < 1.0 else int(limit)
+            limit = int(len(task_docs) * limit) if limit <= 1.0 else int(limit)
 
         for doc_id, doc in enumerate(itertools.islice(task_docs, 0, limit)):
             if decontaminate and task.should_decontaminate():

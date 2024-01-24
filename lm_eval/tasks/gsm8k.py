@@ -61,7 +61,10 @@ class GradeSchoolMath8K(Task):
         return self.dataset["test"]
 
     def doc_to_text(self, doc):
-        return "Question: " + doc["question"] + "\nAnswer:"
+        text = "Question: " + doc["question"] + "\nAnswer:"
+        # if self.is_chat_format:
+        #     text = "<|user|>\n" + text + "\n<|assistant|>\n"
+        return text
 
     def doc_to_target(self, doc):
         return " " + doc["answer"]
@@ -79,6 +82,8 @@ class GradeSchoolMath8K(Task):
         """
         # NOTE: The paper implements "verifiers" that assign a score to multiple
         # solutions and output the highest ranked solution.
+        # if self.is_chat_format:
+        #     ctx = "<|user|>\n" + ctx + "<|assistant|>\n"
         completion = rf.greedy_until(ctx, {"until": [":", "Question:", "Question"]})
         return completion
 
