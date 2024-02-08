@@ -44,6 +44,7 @@ for BATCH_SIZE_PER_GPU in \
     8 \
     ; do
     for TASK in ARC gsm8k truthfulqa triviaqa hellaswag; do
+    # for TASK in hellaswag; do
     # for TASK in ARC; do
         if [[ $TASK == "ARC" ]]; then
             TASK_LIST="arc_challenge"
@@ -51,6 +52,7 @@ for BATCH_SIZE_PER_GPU in \
         elif [[ $TASK == "hellaswag" ]]; then
             TASK_LIST="hellaswag"
             FEW_SHOT=10
+            LIMIT=2000
         elif [[ $TASK == "truthfulqa" ]]; then
             TASK_LIST="truthfulqa_mc"
             FEW_SHOT=0
@@ -63,7 +65,6 @@ for BATCH_SIZE_PER_GPU in \
         elif [[ $TASK == "gsm8k" ]]; then
             TASK_LIST="gsm8k"
             FEW_SHOT=5
-            LIMIT=200
         elif [[ $TASK == "triviaqa" ]]; then
             TASK_LIST="triviaqa"
             FEW_SHOT=5
@@ -77,13 +78,32 @@ for BATCH_SIZE_PER_GPU in \
         echo "BATCH_SIZE_PER_GPU: $BATCH_SIZE_PER_GPU"
 
         echo "CHAT FORMAT"
-        python main.py \
-            --model=hf-causal-experimental \
-            --model_args="pretrained=${MODEL_NAME_OR_PATH},use_accelerate=True,use_flash_attention_2=True" \
-            --tasks=$TASK_LIST \
-            --is_chat_format \
-            --num_fewshot=$FEW_SHOT \
-            --batch_size=$BATCH_SIZE_PER_GPU
+        if [[ $TASK == "hellaswag" ]]; then
+            python main.py \
+                --model=hf-causal-experimental \
+                --model_args="pretrained=${MODEL_NAME_OR_PATH},use_accelerate=True,use_flash_attention_2=True" \
+                --tasks=$TASK_LIST \
+                --is_chat_format \
+                --num_fewshot=$FEW_SHOT \
+                --batch_size=$BATCH_SIZE_PER_GPU \
+                --limit=$LIMIT
+        else
+            python main.py \
+                --model=hf-causal-experimental \
+                --model_args="pretrained=${MODEL_NAME_OR_PATH},use_accelerate=True,use_flash_attention_2=True" \
+                --tasks=$TASK_LIST \
+                --is_chat_format \
+                --num_fewshot=$FEW_SHOT \
+                --batch_size=$BATCH_SIZE_PER_GPU
+        fi
+
+        # python main.py \
+        #     --model=hf-causal-experimental \
+        #     --model_args="pretrained=${MODEL_NAME_OR_PATH},use_accelerate=True,use_flash_attention_2=True" \
+        #     --tasks=$TASK_LIST \
+        #     --is_chat_format \
+        #     --num_fewshot=$FEW_SHOT \
+        #     --batch_size=$BATCH_SIZE_PER_GPU
 
         # echo "NO CHAT FORMAT"
         # python main.py \
