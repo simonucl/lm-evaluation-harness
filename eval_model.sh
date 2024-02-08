@@ -79,7 +79,7 @@ for BATCH_SIZE_PER_GPU in \
 
         echo "CHAT FORMAT"
         if [[ $TASK == "hellaswag" ]]; then
-            python main.py \
+            python3 main.py \
                 --model=hf-causal-experimental \
                 --model_args="pretrained=${MODEL_NAME_OR_PATH},use_accelerate=True,use_flash_attention_2=True" \
                 --tasks=$TASK_LIST \
@@ -88,7 +88,7 @@ for BATCH_SIZE_PER_GPU in \
                 --batch_size=$BATCH_SIZE_PER_GPU \
                 --limit=$LIMIT
         else
-            python main.py \
+            python3 main.py \
                 --model=hf-causal-experimental \
                 --model_args="pretrained=${MODEL_NAME_OR_PATH},use_accelerate=True,use_flash_attention_2=True" \
                 --tasks=$TASK_LIST \
@@ -97,7 +97,7 @@ for BATCH_SIZE_PER_GPU in \
                 --batch_size=$BATCH_SIZE_PER_GPU
         fi
 
-        # python main.py \
+        # python3 main.py \
         #     --model=hf-causal-experimental \
         #     --model_args="pretrained=${MODEL_NAME_OR_PATH},use_accelerate=True,use_flash_attention_2=True" \
         #     --tasks=$TASK_LIST \
@@ -106,7 +106,7 @@ for BATCH_SIZE_PER_GPU in \
         #     --batch_size=$BATCH_SIZE_PER_GPU
 
         # echo "NO CHAT FORMAT"
-        # python main.py \
+        # python3 main.py \
         #     --model=hf-causal-experimental \
         #     --model_args="pretrained=${MODEL_NAME_OR_PATH},use_accelerate=True,use_flash_attention_2=True" \
         #     --tasks=$TASK_LIST \
@@ -151,7 +151,7 @@ done
 #             echo "MODEL_NAME_OR_PATH: $MODEL_NAME_OR_PATH"
 #             echo "TASK: $TASK"
 #             echo "BATCH_SIZE_PER_GPU: $BATCH_SIZE_PER_GPU"
-#             python main.py \
+#             python3 main.py \
 #                 --model=hf-causal-experimental \
 #                 --model_args="pretrained=${MODEL_NAME_OR_PATH},use_accelerate=True,use_flash_attention_2=True" \
 #                 --tasks=$TASK_LIST \
@@ -160,7 +160,7 @@ done
 #                 --batch_size=$BATCH_SIZE_PER_GPU \
 #                 --device cuda:0         
 
-#             python main.py \
+#             python3 main.py \
 #                 --model=hf-causal-experimental \
 #                 --model_args="pretrained=${MODEL_NAME_OR_PATH},peft=/mnt/data/data-selection/output/data_selection_Llama-2-7b-hf-sharegpt_lora,use_accelerate=True,use_flash_attention_2=True" \
 #                 --tasks=$TASK_LIST \
@@ -174,7 +174,7 @@ done
 # echo "TASK_LIST: $TASK_LIST"
 # echo "FEW_SHOT: $FEW_SHOT"
 
-# python main.py \
+# python3 main.py \
 #     --model=hf-causal-experimental \
 #     --model_args="pretrained=${MODEL_NAME_OR_PATH},use_accelerate=True,use_flash_attention_2=True" \
 #     --tasks=$TASK_LIST \
