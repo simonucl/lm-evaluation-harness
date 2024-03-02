@@ -79,7 +79,7 @@ for BATCH_SIZE_PER_GPU in \
 
         echo "CHAT FORMAT"
         if [[ $TASK == "hellaswag" ]]; then
-            python3 main.py \
+            python3 lm-evaluation-harness/main.py \
                 --model=hf-causal-experimental \
                 --model_args="pretrained=${MODEL_NAME_OR_PATH},use_accelerate=True,use_flash_attention_2=True" \
                 --tasks=$TASK_LIST \
@@ -88,7 +88,7 @@ for BATCH_SIZE_PER_GPU in \
                 --batch_size=$BATCH_SIZE_PER_GPU \
                 --limit=$LIMIT
         else
-            python3 main.py \
+            python3 lm-evaluation-harness/main.py \
                 --model=hf-causal-experimental \
                 --model_args="pretrained=${MODEL_NAME_OR_PATH},use_accelerate=True,use_flash_attention_2=True" \
                 --tasks=$TASK_LIST \
