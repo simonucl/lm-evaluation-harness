@@ -43,8 +43,10 @@ fi
 for BATCH_SIZE_PER_GPU in \
     8 \
     ; do
-    for TASK in ARC gsm8k truthfulqa triviaqa hellaswag; do
-    # for TASK in hellaswag; do
+    # for TASK in ARC gsm8k truthfulqa triviaqa hellaswag; do
+    # for TASK in truthfulqa triviaqa hellaswag; do
+    for TASK in ARC gsm8k truthfulqa triviaqa; do    
+# for TASK in hellaswag; do
     # for TASK in ARC; do
         if [[ $TASK == "ARC" ]]; then
             TASK_LIST="arc_challenge"
