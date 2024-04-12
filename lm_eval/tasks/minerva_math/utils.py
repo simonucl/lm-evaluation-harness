@@ -17,7 +17,7 @@ please install sympy via pip install lm-eval[math] or pip install -e .[math]",
     )
 
 
-Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\n{instruction}\n\n### Response:\nLet's think step by step. {response}
+# Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\n{instruction}\n\n### Response:\nLet's think step by step. {response}
 # taken from
 # https://github.com/wellecks/lm-evaluation-harness/blob/master/lm_eval/tasks/minerva_math.py
 def doc_to_text(doc: dict) -> str:
