@@ -41,7 +41,7 @@ for BATCH_SIZE_PER_GPU in \
             FEW_SHOT=3
 	        LIMIT=500
         elif [[ $TASK == "gsm8k" ]]; then
-            TASK_LIST="gsm8k-cot"
+            TASK_LIST="gsm8k_cot"
             FEW_SHOT=5
         elif [[ $TASK == "triviaqa" ]]; then
             TASK_LIST="triviaqa"
