@@ -65,8 +65,8 @@ for BATCH_SIZE_PER_GPU in \
 	    lm_eval --model vllm \
 		    --model_args="pretrained=${MODEL_NAME_OR_PATH},tensor_parallel_size=2,dtype=auto,gpu_memory_utilization=0.8,data_parallel_size=1" \
 		    --tasks=$TASK_LIST \
-		    --batch_size auto \
-        fi
+		    --batch_size auto
+    fi
 
         # python3 main.py \
         #     --model=hf-causal-experimental \
