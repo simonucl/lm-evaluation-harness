@@ -68,13 +68,13 @@ for BATCH_SIZE_PER_GPU in \
 		    --limit=$LIMIT
     elif [[ $TASK == "hellaswag" ]]; then
         lm_eval --model hf \
-            --model_args="pretrained=${MODEL_NAME_OR_PATH},attn_implementation=flash_attention_2,torch_dtype=torch.bfloat16" \
+            --model_args="pretrained=${MODEL_NAME_OR_PATH},attn_implementation=flash_attention_2" \
             --tasks=$TASK_LIST \
             --batch_size auto \
             --limit=$LIMIT
     else
 	    lm_eval --model hf \
-		    --model_args="pretrained=${MODEL_NAME_OR_PATH},attn_implementation=flash_attention_2,torch_dtype=torch.bfloat16" \
+		    --model_args="pretrained=${MODEL_NAME_OR_PATH},attn_implementation=flash_attention_2" \
 		    --tasks=$TASK_LIST \
 		    --batch_size auto
     fi
