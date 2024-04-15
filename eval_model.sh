@@ -19,7 +19,7 @@ for BATCH_SIZE_PER_GPU in \
     ; do
     # for TASK in ARC gsm8k truthfulqa triviaqa hellaswag; do
     # for TASK in truthfulqa triviaqa hellaswag; do
-    for TASK in math; do
+    for TASK in ARC gsm8k math truthfulqa hellaswag; do
         if [[ $TASK == "ARC" ]]; then
             TASK_LIST="arc_challenge"
             FEW_SHOT=25
@@ -39,7 +39,7 @@ for BATCH_SIZE_PER_GPU in \
         elif [[ $TASK == "math" ]]; then
             TASK_LIST="minerva_math"
             FEW_SHOT=3
-	    LIMIT=500
+	        LIMIT=500
         elif [[ $TASK == "gsm8k" ]]; then
             TASK_LIST="gsm8k"
             FEW_SHOT=5
@@ -55,25 +55,17 @@ for BATCH_SIZE_PER_GPU in \
         echo "TASK: $TASK"
         echo "BATCH_SIZE_PER_GPU: $BATCH_SIZE_PER_GPU"
 
-        if [[ $TASK == "hellaswag" ]]; then
-            lm_eval --model hf \
-		--model_args="pretrained=${MODEL_NAME_OR_PATH},use_flash_attention_2=True" \
-                --tasks=$TASK_LIST \
-                --num_fewshot=$FEW_SHOT \
-                --batch_size=$BATCH_SIZE_PER_GPU \
-                --limit=$LIMIT
-	elif [[ $TASK == "math" ]]; then
+	if [[ $TASK == "math" ]] || [[ $TASK == "hellaswag" ]]; then
 	    lm_eval --model vllm \
 		    --model_args="pretrained=${MODEL_NAME_OR_PATH},tensor_parallel_size=2,dtype=auto,gpu_memory_utilization=0.8,data_parallel_size=1" \
 		    --tasks=$TASK_LIST \
 		    --batch_size auto \
 		    --limit=$LIMIT
     	else
-            lm_eval --model hf \
-		--model_args="pretrained=${MODEL_NAME_OR_PATH}" \
-                --tasks=$TASK_LIST \
-                --num_fewshot=$FEW_SHOT \
-                --batch_size=$BATCH_SIZE_PER_GPU
+	    lm_eval --model vllm \
+		    --model_args="pretrained=${MODEL_NAME_OR_PATH},tensor_parallel_size=2,dtype=auto,gpu_memory_utilization=0.8,data_parallel_size=1" \
+		    --tasks=$TASK_LIST \
+		    --batch_size auto \
         fi
 
         # python3 main.py \
