@@ -5,7 +5,7 @@ fewshot_split: dev
 fewshot_config:
   sampler: first_n
 output_type: multiple_choice
-doc_to_text: "{{question.strip()}}\nA. {{A}}\nB. {{B}}\nC. {{C}}\nD. {{D}}\n答案："
+doc_to_text: "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\n{{question.strip()}}\nA. {{A}}\nB. {{B}}\nC. {{C}}\nD. {{D}}\n\n### Response:\n答案："
 doc_to_choice: ["A", "B", "C", "D"]
 doc_to_target: "{{['A', 'B', 'C', 'D'].index(answer)}}"
 metric_list:
