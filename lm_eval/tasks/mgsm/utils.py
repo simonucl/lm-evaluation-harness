@@ -170,10 +170,11 @@ def gen_lang_yamls(output_dir: str, overwrite: bool, mode: str) -> None:
                         "include": yaml_template,
                         "dataset_name": lang,
                         "task": f"{task_name}",
+                        # Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\n{{question.strip()}}\nA. {{choices[0]}}\nB. {{choices[1]}}\nC. {{choices[2]}}\nD. {{choices[3]}}\n\n### Response:\nAnswer:"
                         "doc_to_text": f"""{{% if answer is not none %}}"""
-                        f"""{{{{question+"\\n{ANSWER}"}}}}"""
+                        f"""{{{{Below is an instruction that describes a task. Write a response that appropriately completes the request.\\n\\n### Instruction:\\n{{question.strip()}}\\n\\n### Response:\\n{ANSWER}"}}}}"""
                         f"""{{% else %}}"""
-                        f"""{{{{"{QUESTION} "+question+"\\n{ANSWER}"}}}}"""
+                        f"""{{{{Below is an instruction that describes a task. Write a response that appropriately completes the request.\\n\\n### Instruction:\\n{QUESTION} {{question.strip()}}\\n\\n### Response:\\n{ANSWER}"}}}}"""
                         f"""{{% endif %}}""",
                         "doc_to_target": f"""{{% if answer is not none %}}"""
                         f"""{{{{answer[{ANSWER_TO_SKIP}:]}}}}"""

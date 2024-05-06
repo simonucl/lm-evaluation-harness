@@ -1,0 +1,2 @@
+class: !function task.XQuAD_el
+task: xquad_el

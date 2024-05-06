@@ -1,0 +1,2 @@
+class: !function task.XQuAD_hi
+task: xquad_hi
