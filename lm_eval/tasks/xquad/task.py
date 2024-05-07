@@ -173,101 +173,101 @@ class XQuAD(ConfigurableTask):
             "f1": True,  # The F-score of predicted tokens versus the gold answer
         }
 
-class XQuAD_Spanish(XQuAD):
+class XQuAD_es(XQuAD):
     DATASET_NAME = "xquad.es"
     INSTRUCTION = "Responde a la pregunta en el input basándote en el contexto dado. Tu respuesta debe ser extraída directamente del contexto, y debe ser una entidad, nombre o número, no una oración."
     Q = "Pregunta: "
     C = "Contexto: "
     A = "Respuesta: "
 
-class XQuAD_German(XQuAD):
+class XQuAD_de(XQuAD):
     DATASET_NAME = "xquad.de"
     INSTRUCTION = "Beantworte die Frage im Input basierend auf dem gegebenen Kontext. Deine Antwort sollte direkt aus dem Kontext extrahiert werden und sollte eine einzelne Entität, einen Namen oder eine Zahl sein, nicht ein Satz."
     Q = "Frage: "
     C = "Kontext: "
     A = "Antwort: "
 
-class XQuAD_Greek(XQuAD):
+class XQuAD_el(XQuAD):
     DATASET_NAME = "xquad.el"
     INSTRUCTION = "Απάντησε στην ερώτηση στην είσοδο βασιζόμενος στον δεδομένο πλαίσιο. Η απάντησή σας πρέπει να εξαχθεί απευθείας από το πλαίσιο και πρέπει να είναι μια μόνο οντότητα, όνομα ή αριθμός, όχι μια πρόταση."
     Q = "Ερώτηση: "
     C = "Πλαίσιο: "
     A = "Απάντηση: "
 
-class XQuAD_Russian(XQuAD):
+class XQuAD_ru(XQuAD):
     DATASET_NAME = "xquad.ru"
     INSTRUCTION = "Ответьте на вопрос во входных данных на основе предоставленного контекста. Ваш ответ должен быть непосредственно извлечен из контекста и должен быть одной сущностью, именем или числом, а не предложением."
     Q = "Вопрос: "
     C = "Контекст: "
     A = "Ответ: "
 
-class XQuAD_Turkish(XQuAD):
+class XQuAD_tr(XQuAD):
     DATASET_NAME = "xquad.tr"
     INSTRUCTION = "Girişteki bağlamı dikkate alarak soruya yanıt verin. Yanıtınız, bağlamdan doğrudan çıkarılmalı ve bir varlık, ad veya sayı olmalı, cümle olmamalıdır."
     Q = "Soru: "
     C = "Bağlam: "
     A = "Yanıt: "
 
-class XQuAD_Arabic(XQuAD):
+class XQuAD_ar(XQuAD):
     DATASET_NAME = "xquad.ar"
     INSTRUCTION = "أجب على السؤال في الإدخال استنادًا إلى السياق المعطى. يجب أن تكون إجابتك مستخرجة مباشرة من السياق، ويجب أن تكون كيانًا واحدًا أو اسمًا أو رقمًا، وليس جملة."
     Q = "سؤال: "
     C = "السياق: "
     A = "الإجابة: "
 
-class XQuAD_Vietnamese(XQuAD):
+class XQuAD_vi(XQuAD):
     DATASET_NAME = "xquad.vi"
     INSTRUCTION = "Trả lời câu hỏi trong đầu vào dựa trên ngữ cảnh đã cho. Câu trả lời của bạn phải được trích xuất trực tiếp từ ngữ cảnh và nó phải là một thực thể, tên hoặc số, không phải là một câu."
     Q = "Câu hỏi: "
     C = "Bối cảnh: "
     A = "Câu trả lời: "
 
-class XQuAD_Thai(XQuAD):
+class XQuAD_th(XQuAD):
     DATASET_NAME = "xquad.th"
     INSTRUCTION = "ตอบคำถามในข้อมูลนำเข้าโดยพิจารณาจากบริบทที่กำหนดให้ คำตอบของคุณควรถูกดึงมาจากบริบทโดยตรง และควรเป็นสิ่งเดียว ชื่อหรือตัวเลข ไม่ใช่ประโยค"
     Q = "คำถาม: "
     C = "บริบท: "
     A = "คำตอบ: "
 
-class XQuAD_Chinese(XQuAD):
+class XQuAD_zh(XQuAD):
     DATASET_NAME = "xquad.zh"
     INSTRUCTION = "根据给定的上下文回答输入中的问题。您的答案应直接从上下文中提取，应为单个实体、名称或数字，而不是句子。"
     Q = "问题: "
     C = "上下文: "
     A = "答案: "
 
-class XQuAD_Hindi(XQuAD):
+class XQuAD_hi(XQuAD):
     DATASET_NAME = "xquad.hi"
     INSTRUCTION = "दिए गए संदर्भ पर आधारित प्रश्न का उत्तर दें। आपका उत्तर सीधे संदर्भ से निकाला जाना चाहिए, और यह एक एकल इकाई, नाम या संख्या होना चाहिए, न कि एक वाक्य।"
     Q = "प्रश्न: "
     C = "संदर्भ: "
     A = "उत्तर: "
 
-class XQuAD_English(XQuAD):
+class XQuAD_en(XQuAD):
     DATASET_NAME = "xquad.en"
 
-LANG_CLASSES = [
-    XQuAD_Arabic,
-    XQuAD_Chinese,
-    XQuAD_German,
-    XQuAD_Greek,
-    XQuAD_Hindi,
-    XQuAD_Russian,
-    XQuAD_Spanish,
-    XQuAD_Thai,
-    XQuAD_Turkish,
-    XQuAD_Vietnamese,
-    XQuAD_English,
-]
+# LANG_CLASSES = [
+#     XQuAD_Arabic,
+#     XQuAD_Chinese,
+#     XQuAD_German,
+#     XQuAD_Greek,
+#     XQuAD_Hindi,
+#     XQuAD_Russian,
+#     XQuAD_Spanish,
+#     XQuAD_Thai,
+#     XQuAD_Turkish,
+#     XQuAD_Vietnamese,
+#     XQuAD_English,
+# ]
 
-def construct_tasks():
-    tasks = {}
-    for lang, lang_class in zip(
-        ["ar", "zh", "de", "el", "hi", "ru", "es", "th", "tr", "vi", "en"],
-        LANG_CLASSES,
-    ):
-        tasks[f"xquad_{lang}"] = lang_class
-    return tasks
+# def construct_tasks():
+#     tasks = {}
+#     for lang, lang_class in zip(
+#         ["ar", "zh", "de", "el", "hi", "ru", "es", "th", "tr", "vi", "en"],
+#         LANG_CLASSES,
+#     ):
+#         tasks[f"xquad_{lang}"] = lang_class
+#     return tasks
 
 # if __name__ == "__main__":
 #     # iterate over the langs and save it into a yaml file, with task: xquad_{lang} and class: !function task.XQuAD_{lang}
