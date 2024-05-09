@@ -60,9 +60,9 @@ class XQuAD(ConfigurableTask):
 
     def __init__(self):
         super().__init__(config={"metadata": {"version": self.VERSION}})
-        
+
     def has_training_docs(self):
-        return True
+        return False
 
     def has_validation_docs(self):
         return True
@@ -70,8 +70,8 @@ class XQuAD(ConfigurableTask):
     def has_test_docs(self):
         return False
 
-    def training_docs(self):
-        return self.dataset["train"]
+    # def training_docs(self):
+    #     return self.dataset["train"]
 
     def validation_docs(self):
         return self.dataset["validation"]
