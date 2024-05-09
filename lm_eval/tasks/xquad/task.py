@@ -58,7 +58,9 @@ class XQuAD(ConfigurableTask):
     #     "1.11.0"
     # ), "datasets v1.11.0 or later required for SQuAD"
 
-    
+    def __init__(self):
+        super().__init__(config={"metadata": {"version": self.VERSION}})
+        
     def has_training_docs(self):
         return True
 
