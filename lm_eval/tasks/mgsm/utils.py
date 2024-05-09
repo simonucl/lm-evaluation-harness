@@ -174,7 +174,7 @@ def gen_lang_yamls(output_dir: str, overwrite: bool, mode: str) -> None:
                         "doc_to_text": f"""{{% if answer is not none %}}"""
                         f"""{{{{"Below is an instruction that describes a task. Write a response that appropriately completes the request.\\n\\n### Instruction:\\n" + question + "\\n\\n### Response:\\n{ANSWER}"}}}}"""
                         f"""{{% else %}}"""
-                        f"""{{{{"Below is an instruction that describes a task. Write a response that appropriately completes the request.\\n\\n### Instruction:\\n{QUESTION} + question + "\\n\\n### Response:\\n{ANSWER}"}}}}"""
+                        f"""{{{{"Below is an instruction that describes a task. Write a response that appropriately completes the request.\\n\\n### Instruction:\\n{QUESTION}" + question + "\\n\\n### Response:\\n{ANSWER}"}}}}"""
                         f"""{{% endif %}}""",
                         "doc_to_target": f"""{{% if answer is not none %}}"""
                         f"""{{{{answer[{ANSWER_TO_SKIP}:]}}}}"""
