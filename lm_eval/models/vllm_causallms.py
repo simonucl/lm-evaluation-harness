@@ -6,6 +6,7 @@ from typing import List, Literal, Optional, Tuple, Union
 from more_itertools import distribute
 from packaging.version import parse as parse_version
 from tqdm import tqdm
+# import transformers
 
 from lm_eval.api.instance import Instance
 from lm_eval.api.model import TemplateLM
@@ -60,6 +61,9 @@ class VLLM(TemplateLM):
         device: str = "cuda",
         data_parallel_size: int = 1,
         lora_local_path: str = None,
+        # Chat templating settings
+        use_chat_template: Optional[bool] = False,
+        system_prompt: Optional[str] = None,
         **kwargs,
     ):
         super().__init__()
@@ -123,6 +127,10 @@ class VLLM(TemplateLM):
             trust_remote_code=trust_remote_code,
             tokenizer_revision=tokenizer_revision,
         )
+        if (use_chat_template) and (self.tokenizer.chat_template is None):
+            self.tokenizer.chat_template = "{% for message in messages %}\n{% if message['role'] == 'user' %}\n{{ '<|user|>\n' + message['content'] }}\n{% elif message['role'] == 'assistant' %}\n{{ '<|assistant|>\n'  + message['content'] + eos_token }}\n{% endif %}\n{% if loop.last and add_generation_prompt %}\n{{ '<|assistant|>' }}\n{% endif %}\n{% endfor %}"
+        self.use_chat_template = use_chat_template
+        self.system_prompt = system_prompt
         self.add_bos_token = add_bos_token
         self.custom_prefix_token_id = prefix_token_id
         if prefix_token_id is not None:
@@ -175,6 +183,36 @@ class VLLM(TemplateLM):
     def max_gen_toks(self):
         return self._max_gen_toks
 
+    def wrap_chat_template(
+        self, requests: List[Instance], generate=False
+    ) -> List[Instance]:
+        """
+        Utility for adding chat templates via the apply_chat_template() method
+        """
+        # TODO: handle repeats > 1 case?
+        # TODO: raise an error if system prompt not compatible with template
+        new_reqs = []
+        for req in requests:
+            context, continuation = req.args[0].strip(), req.args[1]
+            chat = []
+            if self.system_prompt is not None:
+                chat += [{"role": "system", "content": self.system_prompt}]
+
+            chat += [
+                {"role": "user", "content": context},
+            ]
+            # TODO: expose settings for chat formatting:
+            # - whether some "trigger" / start of assistant response might be placed in assistant's generation for it
+            # - if few-shot, should the fewshots be placed in separate convo turns? provided in user's single turn?...
+            context = self.tokenizer.apply_chat_template(
+                chat,
+                tokenize=False,
+                add_generation_prompt=True,
+            )
+            req.args = (context, continuation)
+            new_reqs.append(req)
+        return new_reqs
+    
     def tok_encode(
         self,
         string: str,
@@ -254,6 +292,10 @@ class VLLM(TemplateLM):
     def loglikelihood_rolling(
         self, requests: List[Instance], disable_tqdm: bool = False
     ) -> List[float]:
+        if self.use_chat_template:
+            print(f"First element before prompt formatting...\n{requests[0].args}")
+            requests = self.wrap_chat_template(requests)
+            print(f"First element after prompt formatting...\n{requests[0].args}")
         loglikelihoods = []
 
         for (string,) in tqdm([req.args for req in requests], disable=disable_tqdm):
@@ -285,6 +327,10 @@ class VLLM(TemplateLM):
     def generate_until(
         self, requests: List[Instance], disable_tqdm: bool = False
     ) -> List[str]:
+        if self.use_chat_template:
+            print(f"First element before prompt formatting...\n{requests[0].args}")
+            requests = self.wrap_chat_template(requests)
+            print(f"First element after prompt formatting...\n{requests[0].args}")
         res = []
 
         # batch tokenize contexts
