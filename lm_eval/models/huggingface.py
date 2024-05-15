@@ -197,9 +197,6 @@ class HFLM(TemplateLM):
                 trust_remote_code=trust_remote_code,
             )
 
-        if (use_chat_template) and (self.tokenizer.chat_template is None):
-            self.tokenizer.chat_template = "{% for message in messages %}\n{% if message['role'] == 'user' %}\n{{ '<|user|>\n' + message['content'] }}\n{% elif message['role'] == 'assistant' %}\n{{ '<|assistant|>\n'  + message['content'] + eos_token }}\n{% endif %}\n{% if loop.last and add_generation_prompt %}\n{{ '<|assistant|>' }}\n{% endif %}\n{% endfor %}"
-
         # determine which of 'causal' and 'seq2seq' backends to use
         self._get_backend(
             config=self.config, backend=backend, trust_remote_code=trust_remote_code
@@ -303,6 +300,9 @@ class HFLM(TemplateLM):
         else:
             self.batch_size_per_gpu = int(batch_size)
 
+        if (use_chat_template) and (self.tokenizer.chat_template is None):
+            self.tokenizer.chat_template = "{% for message in messages %}\n{% if message['role'] == 'user' %}\n{{ '<|user|>\n' + message['content'] }}\n{% elif message['role'] == 'assistant' %}\n{{ '<|assistant|>\n'  + message['content'] + eos_token }}\n{% endif %}\n{% if loop.last and add_generation_prompt %}\n{{ '<|assistant|>' }}\n{% endif %}\n{% endfor %}"
+            
         if isinstance(pretrained, str):
             # multigpu data-parallel support when launched with accelerate
             if gpus > 1:
