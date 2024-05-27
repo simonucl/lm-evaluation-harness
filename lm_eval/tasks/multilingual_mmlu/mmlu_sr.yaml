@@ -1,0 +1,2 @@
+class: !function task.MMLU_sr
+task: mmlu_sr
