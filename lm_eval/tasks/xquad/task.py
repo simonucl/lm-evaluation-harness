@@ -77,7 +77,8 @@ class XQuAD(ConfigurableTask):
         return self.dataset["validation"]
 
     def doc_to_text(self, doc):
-        input = self.Q + doc["question"] + "\n" + self.C + doc["context"]
+        # input = self.Q + doc["question"] + "\n" + self.C + doc["context"]
+        input = self.C + doc["context"] + "\n" + self.Q + doc["question"]
         prompt = self.PROMPT_TEMPLATE.format(instruction=self.INSTRUCTION, input=input) + self.A
         return prompt
 
