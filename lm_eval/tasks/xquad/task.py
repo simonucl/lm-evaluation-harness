@@ -92,7 +92,7 @@ class XQuAD(ConfigurableTask):
         answer_list = doc["answers"]["text"]
         if len(answer_list) > 0:
             answer = answer_list[0]
-        return " " + answer
+        return answer
 
     def construct_requests(self, doc, ctx, **kwargs):
         """Uses RequestFactory to construct Requests and returns an iterable of
