@@ -26,6 +26,11 @@ eval_logger = logging.getLogger("lm-eval")
 
 SPACING = " " * 47
 
+HIGHER_IS_BETTER_SYMBOLS = {
+    True: "↑",
+    False: "↓",
+}
+
 
 def hash_string(string: str) -> str:
     return hashlib.sha256(string.encode("utf-8")).hexdigest()
@@ -74,6 +79,18 @@ def handle_non_serializable(o):
         return list(o)
     else:
         return str(o)
+
+
+def sanitize_list(sub):
+    """
+    Takes possible nested list and recursively converts all inner component to strings
+    """
+    if isinstance(sub, list):
+        return [sanitize_list(item) for item in sub]
+    if isinstance(sub, tuple):
+        return tuple(sanitize_list(item) for item in sub)
+    else:
+        return str(sub)
 
 
 def simple_parse_args_string(args_string):
@@ -242,7 +259,7 @@ class Reorderer:
         return res
 
 
-def make_table(result_dict, column: str = "results"):
+def make_table(result_dict, column: str = "results", sort_results: bool = True):
     """Generate table of results."""
     from pytablewriter import LatexTableWriter, MarkdownTableWriter
 
@@ -257,6 +274,7 @@ def make_table(result_dict, column: str = "results"):
         "Filter",
         "n-shot",
         "Metric",
+        "",
         "Value",
         "",
         "Stderr",
@@ -269,9 +287,15 @@ def make_table(result_dict, column: str = "results"):
 
     values = []
 
-    for k, dic in result_dict[column].items():
+    keys = result_dict[column].keys()
+    if sort_results:
+        # sort entries alphabetically
+        keys = sorted(keys)
+    for k in keys:
+        dic = result_dict[column][k]
         version = result_dict["versions"].get(k, "N/A")
         n = str(result_dict["n-shot"][k])
+        higher_is_better = result_dict.get("higher_is_better", {}).get(k, {})
 
         if "alias" in dic:
             k = dic.pop("alias")
@@ -281,13 +305,15 @@ def make_table(result_dict, column: str = "results"):
             if m.endswith("_stderr"):
                 continue
 
+            hib = HIGHER_IS_BETTER_SYMBOLS.get(higher_is_better.get(m), "")
+
             if m + "_stderr" + "," + f in dic:
                 se = dic[m + "_stderr" + "," + f]
                 if se != "N/A":
                     se = "%.4f" % se
-                values.append([k, version, f, n, m, "%.4f" % v, "±", se])
+                values.append([k, version, f, n, m, hib, "%.4f" % v, "±", se])
             else:
-                values.append([k, version, f, n, m, "%.4f" % v, "", ""])
+                values.append([k, version, f, n, m, hib, "%.4f" % v, "", ""])
             k = ""
             version = ""
     md_writer.value_matrix = values
