@@ -1,2 +1,22 @@
-class: !function task.MMLU_es
+group: m_mmlu
 task: mmlu_es
+dataset_path: datasets/m_mmlu
+dataset_name: mmlu_es
+output_type: multiple_choice
+test_split: test
+fewshot_split: validation
+fewshot_config:
+  sampler: first_n
+num_fewshot: 5
+doc_to_text: "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\n{{instruction.strip()}}\nA. {{option_a}}\nB. {{option_b}}\nC. {{option_c}}\nD. {{option_d}}\n\n### Response:\nRespuesta:"
+doc_to_choice: ["A", "B", "C", "D"]
+doc_to_target: "{{['A', 'B', 'C', 'D'].index(answer)}}"
+metric_list:
+  - metric: acc
+    aggregation: mean
+    higher_is_better: true
+  - metric: acc_norm
+    aggregation: mean
+    higher_is_better: true
+metadata:
+  version: 0.0

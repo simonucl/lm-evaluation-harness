@@ -1,6 +1,5 @@
-group:
-  - multiple_choice
-task: m_mmlu_zh
+group: m_mmlu
+task: mmlu_zh
 dataset_path: datasets/m_mmlu
 dataset_name: mmlu_zh
 output_type: multiple_choice
