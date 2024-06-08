@@ -35,7 +35,7 @@ def create_task(lang):
 
 class GeneralHendrycksTest(MultipleChoiceTask):
     VERSION = 0
-    NUM_FEW_SHOT = 25
+    NUM_FEW_SHOT = 5
     DATASET_PATH = "datasets/m_mmlu"
     DATASET_NAME = None
     PROMPT_TEMPLATE = "Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.\n\n### Instruction:\n{instruction}\n\n### Response:\n"
