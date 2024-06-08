@@ -40,8 +40,15 @@ class GeneralHendrycksTest(MultipleChoiceTask):
     DATASET_NAME = None
     PROMPT_TEMPLATE = "Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.\n\n### Instruction:\n{instruction}\n\n### Response:\n"
 
+    A_TEMPLATE = {
+        "en": "Answer: ",
+        "es": "Respuesta: ",
+        "ru": "Ответ: ",
+        "zh": "答案：",
+    }
     def __init__(self, lang):
         self.DATASET_NAME = f'mmlu_{lang}'
+        self.lang = lang
         super().__init__(config={"metadata": {"version": self.VERSION}})
 
     def has_training_docs(self):
@@ -66,7 +73,8 @@ class GeneralHendrycksTest(MultipleChoiceTask):
                 [f"{key}. {choice}\n" for key, choice in zip(keys, doc["choices"])]
             )
             prompt = self.PROMPT_TEMPLATE.format(instruction=instruction)
-            prompt += "Answer:"
+            prompt += self.A_TEMPLATE.get(self.lang, "Answer: ")
+            print(prompt)
             return prompt
 
         keys = ["A", "B", "C", "D"]
@@ -88,13 +96,14 @@ class GeneralHendrycksTest(MultipleChoiceTask):
         return rnd.sample(list(self._fewshot_docs), k)
 
     def doc_to_text(self, doc):
+        return doc["query"]
         return self._process_doc(doc)["query"]
 
     def should_decontaminate(self):
         return True
 
     def doc_to_decontamination_query(self, doc):
-        return self._process_doc(doc)["query"]
+        return doc["query"]
     
 for lang in LANGS:
     globals()[f"MMLU_{lang}"] = create_task(lang)
