@@ -88,13 +88,13 @@ class GeneralHendrycksTest(MultipleChoiceTask):
         return rnd.sample(list(self._fewshot_docs), k)
 
     def doc_to_text(self, doc):
-        return doc["query"]
+        return self._process_doc(doc)["query"]
 
     def should_decontaminate(self):
         return True
 
     def doc_to_decontamination_query(self, doc):
-        return doc["query"]
+        return self._process_doc(doc)["query"]
     
 for lang in LANGS:
     globals()[f"MMLU_{lang}"] = create_task(lang)
