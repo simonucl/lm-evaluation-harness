@@ -34,7 +34,7 @@ def create_task(lang):
 
 
 class GeneralHendrycksTest(MultipleChoiceTask):
-    VERSION = 0
+    VERSION = 1
     NUM_FEW_SHOT = 5
     DATASET_PATH = "datasets/m_mmlu"
     DATASET_NAME = None
@@ -96,7 +96,7 @@ class GeneralHendrycksTest(MultipleChoiceTask):
         return rnd.sample(list(self._fewshot_docs), k)
 
     def doc_to_text(self, doc):
-        return doc["query"]
+        # return doc["query"]
         return self._process_doc(doc)["query"]
 
     def should_decontaminate(self):
