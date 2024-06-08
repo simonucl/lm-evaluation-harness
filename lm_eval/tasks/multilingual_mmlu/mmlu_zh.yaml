@@ -8,7 +8,7 @@ fewshot_split: validation
 fewshot_config:
   sampler: first_n
 num_fewshot: 5
-doc_to_text: "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\n{{instruction.strip()}}\nA. {{option_a}}\nB. {{option_b}}\nC. {{option_c}}\nD. {{option_d}}\n\n### Response:\n答案："
+doc_to_text: "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\n{{question.strip()}}\nA. {{choices[0]}}\nB. {{choices[1]}}\nC. {{choices[2]}}\nD. {{choices[3]}}\n\n### Response:\n答案："
 doc_to_choice: ["A", "B", "C", "D"]
 doc_to_target: "{{['A', 'B', 'C', 'D'].index(answer)}}"
 metric_list:
