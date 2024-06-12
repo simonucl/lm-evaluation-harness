@@ -1,7 +1,7 @@
 import copy
 from importlib.metadata import version
 from importlib.util import find_spec
-from typing import List, Literal, Optional, Tuple, Union
+from typing import List, Literal, Optional, Tuple, Union, Dict
 
 from more_itertools import distribute
 from packaging.version import parse as parse_version
@@ -170,6 +170,16 @@ class VLLM(TemplateLM):
     def max_gen_toks(self):
         return self._max_gen_toks
 
+    @property
+    def tokenizer_name(self) -> str:
+        return self.tokenizer.name_or_path.replace("/", "__")
+    
+    @property
+    def chat_template(self) -> str:
+        if self.tokenizer.chat_template is not None:
+            return self.tokenizer.chat_template
+        return self.tokenizer.default_chat_template
+    
     def tok_encode(
         self,
         string: str,
@@ -372,6 +382,14 @@ class VLLM(TemplateLM):
         # reorder all group of results back to original unsorted form
         return re_ords.get_original(res)
 
+    def apply_chat_template(self, chat_history: List[Dict[str, str]]) -> str:
+        """
+        Method to apply a chat template to a list of chat history between user and model.
+        """
+        return self.tokenizer.apply_chat_template(
+            chat_history, tokenize=False, add_generation_prompt=True
+        )
+    
     def _loglikelihood_tokens(
         self,
         requests: List[Tuple[Tuple[str, str], List[int], List[int]]],
