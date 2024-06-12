@@ -203,6 +203,10 @@ def simple_evaluate(
         eval_logger.info("Using pre-initialized model")
         lm = model
 
+    if lm.tokenizer.chat_template is None:
+        lm.tokenizer.chat_template = "{% for message in messages %}\n{% if message['role'] == 'user' %}\n{{ '<|user|>\n' + message['content'] }}\n{% elif message['role'] == 'assistant' %}\n{{ '<|assistant|>\n'  + message['content'] + eos_token }}\n{% endif %}\n{% if loop.last and add_generation_prompt %}\n{{ '<|assistant|>' }}\n{% endif %}\n{% endfor %}"
+        eval_logger.info("Chat template not set. Using default chat template.")
+        
     if use_cache is not None:
         eval_logger.info(f"Using cache at {use_cache + '_rank' + str(lm.rank) + '.db'}")
         lm = lm_eval.api.model.CachingLM(
