@@ -32,7 +32,7 @@ do
         if [[ $TASK == "gsm" ]]; then
             lm_eval --model vllm \
             --model_args pretrained=${CHECKPOINT},tensor_parallel_size=${NUM_GPUS},dtype=auto,gpu_memory_utilization=0.9 \
-            --gen_kwargs temperature=0,top_k=0,top_p=0 \
+            --gen_kwargs temperature=0,top_k=1,top_p=0.7 \
             --tasks ${TASK_NAME} \
             --batch_size auto \
             --num_fewshot ${NUM_FEW_SHOT} \
