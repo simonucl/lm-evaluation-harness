@@ -38,6 +38,14 @@ do
             --num_fewshot ${NUM_FEW_SHOT} \
             --apply_chat_template \
             --output_path results/${TASK_NAME}/${CHECKPOINT}
+        elif [[ $TASK == "hellaswag" ]]; then # Hellaswag can't use chat template
+            accelerate launch -m lm_eval --model hf \
+            --model_args pretrained=${CHECKPOINT},dtype=bfloat16,attn_implementation=flash_attention_2 \
+            --gen_kwargs temperature=0,top_k=0,top_p=0 \
+            --tasks ${TASK_NAME} \
+            --num_fewshot ${NUM_FEW_SHOT} \
+            --batch_size auto \
+            --output_path results/${TASK_NAME}/${CHECKPOINT}
         else
             accelerate launch -m lm_eval --model hf \
             --model_args pretrained=${CHECKPOINT},dtype=bfloat16,attn_implementation=flash_attention_2 \
