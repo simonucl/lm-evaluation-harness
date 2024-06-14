@@ -30,7 +30,6 @@ do
         --tasks ${TASK_NAME} \
         --batch_size auto \
         --num_fewshot ${NUM_FEW_SHOT} \
-        --apply_chat_template \
         --output_path results/${TASK_NAME}/${CHECKPOINT}
     else
         accelerate launch -m lm_eval --model hf \
@@ -39,7 +38,6 @@ do
         --tasks ${TASK_NAME} \
         --num_fewshot ${NUM_FEW_SHOT} \
         --batch_size auto \
-        --apply_chat_template \
         --output_path results/${TASK_NAME}/${CHECKPOINT}
     fi
 done
