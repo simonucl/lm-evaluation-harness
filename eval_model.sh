@@ -1,7 +1,7 @@
 # pip install -e .
 CHECKPOINT=$1
 
-TASKS=(MMLU ARC gsm)
+TASKS=(MMLU ARC)
 NUM_GPUS=2
 
 for TASK in ${TASKS[@]}

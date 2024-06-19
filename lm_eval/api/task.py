@@ -916,6 +916,7 @@ class ConfigurableTask(Task):
         self.dataset = datasets.load_dataset(
             path=self.DATASET_PATH,
             name=self.DATASET_NAME,
+            trust_remote_code=True,
             **dataset_kwargs if dataset_kwargs is not None else {},
         )
 
