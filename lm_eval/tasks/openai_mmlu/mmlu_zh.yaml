@@ -1,0 +1,19 @@
+group: openai_mmlu
+task: openai_mmlu_zh
+dataset_path: openai/MMMLU
+dataset_name: by_language
+output_type: multiple_choice
+test_split: ZH_CN
+num_fewshot: 0
+doc_to_text: "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\n{{Question.strip()}}\nA. {{A}}\nB. {{B}}\nC. {{C}}\nD. {{D}}\n\n### Response:\n答案："
+doc_to_choice: ["A", "B", "C", "D"]
+doc_to_target: "{{['A', 'B', 'C', 'D'].index(Answer)}}"
+metric_list:
+  - metric: acc
+    aggregation: mean
+    higher_is_better: true
+  - metric: acc_norm
+    aggregation: mean
+    higher_is_better: true
+metadata:
+  version: 0.0
