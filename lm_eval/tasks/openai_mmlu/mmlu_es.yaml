@@ -4,7 +4,40 @@ dataset_path: openai/MMMLU
 dataset_name: by_language
 output_type: multiple_choice
 test_split: ES_LA
-num_fewshot: 0
+num_fewshot: 5
+fewshot_config:
+  sampler: first_n
+  samples:
+    - Question: "Considere el siguiente modelo AR(1) con perturbaciones con media cero y varianza unitaria\n\nyt = 0.2 + 0.4 yt-1 + ut\n\nLa media (incondicional) de y se dará por"
+      A: "0.2"
+      B: "0.4"
+      C: "0.5"
+      D: "0.33"
+      Answer: "D"
+    - Question: "Un hombre de 42 años acude a la consulta para evaluación preoperatoria antes de someterse a una adrenalectomía programada en 2 semanas. Hace un mes, recibió atención en el departamento de emergencias por dolor en su costado derecho después de un accidente automovilístico. En aquel momento, la presión arterial era de 160/100 mm Hg y la tomografía computarizada del abdomen mostró una masa adrenal izquierda incidental de 10 cm. Los resultados de los estudios de laboratorio, incluyendo el hemograma completo, las concentraciones de electrolitos séricos y las pruebas de función hepática, estaban dentro de los rangos de referencia. El paciente, por lo demás, gozaba de buena salud y nunca se le había informado que tenía la presión arterial elevada. No toma medicamentos. Una visita de seguimiento en la consulta hace 2 semanas reveló una elevación de las concentraciones de normetanefrina y metanefrina en orina y de aldosterona en plasma. El paciente fue referido a un cirujano, quien recomendó la adrenalectomía. Hoy, los signos vitales son una temperatura de 36.6°C (97.9°F), un pulso de 100/min, una respiración de 14/min, y una presión arterial de 170/95 mm Hg. El examen físico no revela hallazgos significativos. ¿Cuál de los siguientes tratamientos debería incluir la preparación preoperatoria inicial?"
+      A: "Labetalol"
+      B: "Una dosis de carga de cloruro de potasio"
+      C: "Nifedipino"
+      D: "Fenoxibenzamina"
+      Answer: "D"
+    - Question: "Según el “utilitarismo ideal” de Moore, la acción correcta es aquella que produce la mayor cantidad de:"
+      A: "placer."
+      B: "felicidad."
+      C: "bien."
+      D: "virtud."
+      Answer: "C"
+    - Question: "¿Cuál de las siguientes opciones no está incluida en el PIB de EE. UU.?"
+      A: "Las fuerzas armadas de EE. UU. abren una nueva base en un país extranjero con 1000 miembros del personal de EE. UU."
+      B: "Los consumidores japoneses compran miles de CD producidos en los Estados Unidos."
+      C: "Un cantante pop estadounidense ofrece un concierto con capacidad completa en París."
+      D: "Una producción teatral francesa realiza una gira por docenas de ciudades estadounidenses."
+      Answer: "C"
+    - Question: "¿Cuál de estas afirmaciones es cierta sobre el Vaticano en 2010 en el momento de las acusaciones de encubrimiento de abuso infantil?"
+      A: "Hubo una respuesta coordinada de los medios de comunicación."
+      B: "Se comunicaron mensajes consistentes."
+      C: "Las críticas fueron consideradas como ataques a la Iglesia Católica."
+      D: "Se mantuvo la credibilidad del Vaticano."
+      Answer: "C"
 doc_to_text: "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\n{{Question.strip()}}\nA. {{A}}\nB. {{B}}\nC. {{C}}\nD. {{D}}\n\n### Response:\nRespuesta:"
 doc_to_choice: ["A", "B", "C", "D"]
 doc_to_target: "{{['A', 'B', 'C', 'D'].index(Answer)}}"

@@ -4,7 +4,39 @@ dataset_path: openai/MMMLU
 dataset_name: by_language
 output_type: multiple_choice
 test_split: ZH_CN
-num_fewshot: 0
+num_fewshot: 5
+fewshot_config:
+  sampler: first_n
+  samples:
+    - Question: "考虑以下的AR(1)模型，其中干扰项具有零均值和单位方差\n\nyt = 0.2 + 0.4 yt-1 + ut\n\ny（无条件）均值为"
+      A: "0.2"
+      B: "0.4"
+      C: "0.5"
+      D: "0.33"
+      Answer: "D"
+    - Question: "一个42岁的男子来到诊所进行术前评估，以准备在2周内进行肾上腺切除手术。一个月前，他在摩托车事故后因右侧腰部疼痛在急诊科接受了治疗。当时，他的血压为160/100毫米汞柱，腹部CT扫描显示有一颗意外发现的10厘米左侧肾上腺肿瘤。包括完整血细胞计数、血清电解质浓度和肝功能检测在内的实验室研究结果均在参考范围内。此前，患者一直身体健康，从未被告知有高血压。他没有服用任何药物。2周前，在诊所进行的随访发现他的尿中化验结果为高的正甘肾上腺素和甘肾上腺素以及血浆醛固酮浓度。患者被转介给一位外科医生，后者建议进行肾上腺切除。今天的生命体征是：体温36.6摄氏度（97.9华氏度），脉搏100次/分钟，呼吸14次/分钟，血压为170/95毫米汞柱。体格检查未发现任何明显的发现。术前准备包括以下哪种治疗？"
+      A: "拉贝洛尔"
+      B: "氯化钾负荷剂量"
+      C: "尼群地平"
+      D: "苯妥英胺"
+      Answer: "D"
+    - Question: "根据穆尔的“理想功利主义”，正确的行动是带来最多的:"
+      A: "快乐。"
+      B: "幸福。"
+      C: "善良。"
+      D: "美德。"
+      Answer: "C"
+    - Question: "以下哪项不包括在美国国内生产总值中？"
+      A: "美国军方在外国开设了一个新基地，驻扎1000名美国人员。"
+      B: "日本消费者购买了数千张在美国制作的CD。"
+      C: "一位美国流行歌手在巴黎举行了一场售罄的演唱会。"
+      D: "一部法国剧院制作在美国数十个城市进行了巡回演出。"
+      Answer: "C"
+    - Question: "以下哪项是关于2010年梵蒂冈在儿童性虐待指控掩盖问题上的说法？"
+      A: "媒体进行了协调回应。"
+      B: "消息一致。"
+      C: "批评被视为对天主教会的攻击。"
+      D: "梵蒂冈保持了其信誉。"
 doc_to_text: "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\n{{Question.strip()}}\nA. {{A}}\nB. {{B}}\nC. {{C}}\nD. {{D}}\n\n### Response:\n答案："
 doc_to_choice: ["A", "B", "C", "D"]
 doc_to_target: "{{['A', 'B', 'C', 'D'].index(Answer)}}"
