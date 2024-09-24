@@ -37,6 +37,7 @@ fewshot_config:
       B: "消息一致。"
       C: "批评被视为对天主教会的攻击。"
       D: "梵蒂冈保持了其信誉。"
+      Answer: "C"
 doc_to_text: "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\n{{Question.strip()}}\nA. {{A}}\nB. {{B}}\nC. {{C}}\nD. {{D}}\n\n### Response:\n答案："
 doc_to_choice: ["A", "B", "C", "D"]
 doc_to_target: "{{['A', 'B', 'C', 'D'].index(Answer)}}"
